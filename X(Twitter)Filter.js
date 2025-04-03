@@ -11,8 +11,8 @@
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_addStyle
-// @downloadURL https://update.greasyfork.org/scripts/531649/Kitleleri%20Uyutma%20Arac%C4%B1%20Engelleyici%20%28drsn%20vers%29.user.js
-// @updateURL https://update.greasyfork.org/scripts/531649/Kitleleri%20Uyutma%20Arac%C4%B1%20Engelleyici%20%28drsn%20vers%29.meta.js
+// @downloadURL  https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js
+// @updateURL    https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js
 // ==/UserScript==
 
 (function() {
