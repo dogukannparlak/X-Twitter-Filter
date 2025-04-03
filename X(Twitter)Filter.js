@@ -429,6 +429,11 @@
     GM_registerMenuCommand('🐦 Dursunator Profiline Git', function() {
         window.open('https://x.com/dursunator', '_blank');
     });
+     });
+    GM_registerMenuCommand('🐦 DogukanparIak Profiline Git', function() {
+        window.open('https://x.com/dogukanparIak', '_blank');
+    });
+
 
     observer.observe(document.body, { childList: true, subtree: true });
 })();
