@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Kitleleri Uyutma Aracı Engelleyici (drsn vers)
+// @name         Kitleleri Uyutma Aracı Engelleyici 
 // @namespace    http://x.com/operagxturkiye
 // @version      1.9
 // @description  Bu eklenti, gündemi değiştirmek isteyen ve kitleleri uyutmak için ortaya çıkan gönderileri engellemek için tasarlanmıştır.
