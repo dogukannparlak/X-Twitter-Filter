@@ -415,7 +415,7 @@
             document.body.removeChild(notification);
         }, 3000);
     }
-
+    
     GM_registerMenuCommand('⚙️ Ayarları Aç', toggleSettingsPanel);
     GM_registerMenuCommand('🔄 Yenile', function() {
         location.reload();
@@ -429,11 +429,9 @@
     GM_registerMenuCommand('🐦 Dursunator Profiline Git', function() {
         window.open('https://x.com/dursunator', '_blank');
     });
-     });
     GM_registerMenuCommand('🐦 DogukanparIak Profiline Git', function() {
         window.open('https://x.com/dogukanparIak', '_blank');
     });
-
 
     observer.observe(document.body, { childList: true, subtree: true });
 })();
