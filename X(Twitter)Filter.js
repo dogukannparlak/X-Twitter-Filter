@@ -3,7 +3,7 @@
 // @namespace    http://x.com/operagxturkiye
 // @version      2.0
 // @description  Bu eklenti, gündemi değiştirmek isteyen ve kitleleri uyutmak için ortaya çıkan gönderileri engellemek için tasarlanmıştır. Gelişmiş filtreleme özellikleri içerir.
-// @author       Opera GX Türkiye / dursunator
+// @author       Opera GX Türkiye /dogukanparIak/dursunator
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @icon         https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Opera_GX_Icon.svg/2048px-Opera_GX_Icon.svg.png
