@@ -15,73 +15,82 @@
 // @updateURL    https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+  "use strict";
 
-    // Enhanced default settings with all new features
-    const defaultSettings = {
-        filterMode: 'blur',
-        kitlelerUyutmaKeywords: 'futbol,maç,morinyo,mourinho,#GSvFB,#FBvGS,derbi,fener,fenerbahçe,galatasaray,gs,fb,okan buruk,osimhhen,bjk',
-        ekKeywords: '',
-        specialAccounts: 'fahrettinaltun,06melihgokcek',
-        grokKeywords: 'grok,GROK,@grok',
-        isEnabled: true,
-        shortcutsEnabled: true,
-        customFilters: [
-            { name: 'Politik', keywords: 'siyaset,seçim,miting', message: 'Politik içerik filtrelendi' },
-            { name: 'Reklam', keywords: 'kampanya,indirim,fırsat', message: 'Reklam içeriği filtrelendi' }
-        ],
-        theme: 'dracula',
-        filterStrength: 'medium'
-    };
+  // Enhanced default settings with all new features
+  const defaultSettings = {
+    filterMode: "blur",
+    kitlelerUyutmaKeywords:
+      "futbol,maç,morinyo,mourinho,#GSvFB,#FBvGS,derbi,fener,fenerbahçe,galatasaray,gs,fb,okan buruk,osimhhen,bjk",
+    ekKeywords: "",
+    specialAccounts: "fahrettinaltun,06melihgokcek",
+    grokKeywords: "grok,GROK,@grok",
+    isEnabled: true,
+    shortcutsEnabled: true,
+    customFilters: [
+      {
+        name: "Politik",
+        keywords: "siyaset,seçim,miting",
+        message: "Politik içerik filtrelendi",
+      },
+      {
+        name: "Reklam",
+        keywords: "kampanya,indirim,fırsat",
+        message: "Reklam içeriği filtrelendi",
+      },
+    ],
+    theme: "dracula",
+    filterStrength: "medium",
+  };
 
-    let settings = GM_getValue('uaSettings', defaultSettings);
-    verifySettings();
+  let settings = GM_getValue("uaSettings", defaultSettings);
+  verifySettings();
 
-    // Theme definitions
-    const themes = {
-        dracula: {
-            primary: '#ff5555',
-            background: '#282a36',
-            text: '#f8f8f2'
-        },
-        nord: {
-            primary: '#88c0d0',
-            background: '#2e3440',
-            text: '#eceff4'
-        },
-        custom: {
-            primary: '#f0f',
-            background: '#111',
-            text: '#fff'
-        }
-    };
+  // Theme definitions
+  const themes = {
+    dracula: {
+      primary: "#ff5555",
+      background: "#282a36",
+      text: "#f8f8f2",
+    },
+    nord: {
+      primary: "#88c0d0",
+      background: "#2e3440",
+      text: "#eceff4",
+    },
+    custom: {
+      primary: "#f0f",
+      background: "#111",
+      text: "#fff",
+    },
+  };
 
-    // Filter strength options
-    const filterOptions = {
-        strength: {
-            light: { blurAmount: '4px', label: 'Hafif Bulanıklık' },
-            medium: { blurAmount: '8px', label: 'Orta Bulanıklık' },
-            strong: { blurAmount: '12px', label: 'Güçlü Bulanıklık' }
-        }
-    };
+  // Filter strength options
+  const filterOptions = {
+    strength: {
+      light: { blurAmount: "4px", label: "Hafif Bulanıklık" },
+      medium: { blurAmount: "8px", label: "Orta Bulanıklık" },
+      strong: { blurAmount: "12px", label: "Güçlü Bulanıklık" },
+    },
+  };
 
-    // Apply selected theme
-    function applyTheme() {
-        const theme = themes[settings.theme] || themes.dracula;
-        GM_addStyle(`
+  // Apply selected theme
+  function applyTheme() {
+    const theme = themes[settings.theme] || themes.dracula;
+    GM_addStyle(`
             :root {
                 --ua-primary: ${theme.primary};
                 --ua-background: ${theme.background};
                 --ua-text: ${theme.text};
             }
         `);
-    }
+  }
 
-    applyTheme();
+  applyTheme();
 
-    // Enhanced CSS with theme variables
-    GM_addStyle(`
+  // Enhanced CSS with theme variables
+  GM_addStyle(`
         #uaSettingsPanel {
             position: fixed;
             top: 50%;
@@ -345,245 +354,249 @@
         }
     `);
 
-    // Verify and repair settings
-    function verifySettings() {
-        let needsFix = false;
+  // Verify and repair settings
+  function verifySettings() {
+    let needsFix = false;
 
-        for (const key in defaultSettings) {
-            if (settings[key] === undefined) {
-                settings[key] = defaultSettings[key];
-                needsFix = true;
-            }
-        }
-
-        if (needsFix) {
-            GM_setValue('uaSettings', settings);
-            showNotification('Eksik ayarlar onarıldı', 'info');
-        }
+    for (const key in defaultSettings) {
+      if (settings[key] === undefined) {
+        settings[key] = defaultSettings[key];
+        needsFix = true;
+      }
     }
 
-    // Safe execution wrapper
-    function safeExecute(fn, fallbackValue) {
-        try {
-            return fn();
-        } catch (error) {
-            console.error(`Kitleleri Uyutma Aracı Hata: ${error.message}`, error);
-            showNotification('Bir hata oluştu. Konsolu kontrol edin.', 'error');
-            return fallbackValue;
-        }
+    if (needsFix) {
+      GM_setValue("uaSettings", settings);
+      showNotification("Eksik ayarlar onarıldı", "info");
     }
+  }
 
-    // Get all keywords from different sources
-    function getAllKeywords() {
-        const kitlelerUyutmaKeywords = settings.kitlelerUyutmaKeywords
-            .split(',')
-            .map(keyword => keyword.trim().toLowerCase())
-            .filter(keyword => keyword !== '');
-
-        const ekKeywords = settings.ekKeywords
-            .split(',')
-            .map(keyword => keyword.trim().toLowerCase())
-            .filter(keyword => keyword !== '');
-
-        return [...kitlelerUyutmaKeywords, ...ekKeywords];
+  // Safe execution wrapper
+  function safeExecute(fn, fallbackValue) {
+    try {
+      return fn();
+    } catch (error) {
+      console.error(`Kitleleri Uyutma Aracı Hata: ${error.message}`, error);
+      showNotification("Bir hata oluştu. Konsolu kontrol edin.", "error");
+      return fallbackValue;
     }
+  }
 
-    // Get special accounts from settings
-    function getSpecialAccounts() {
-        return settings.specialAccounts
-            .split(',')
-            .map(account => account.trim().toLowerCase())
-            .filter(account => account !== '');
+  // Get all keywords from different sources
+  function getAllKeywords() {
+    const kitlelerUyutmaKeywords = settings.kitlelerUyutmaKeywords
+      .split(",")
+      .map((keyword) => keyword.trim().toLowerCase())
+      .filter((keyword) => keyword !== "");
+
+    const ekKeywords = settings.ekKeywords
+      .split(",")
+      .map((keyword) => keyword.trim().toLowerCase())
+      .filter((keyword) => keyword !== "");
+
+    return [...kitlelerUyutmaKeywords, ...ekKeywords];
+  }
+
+  // Get special accounts from settings
+  function getSpecialAccounts() {
+    return settings.specialAccounts
+      .split(",")
+      .map((account) => account.trim().toLowerCase())
+      .filter((account) => account !== "");
+  }
+
+  // Get GROK keywords from settings
+  function getGrokKeywords() {
+    return settings.grokKeywords
+      .split(",")
+      .map((keyword) => keyword.trim().toLowerCase())
+      .filter((keyword) => keyword !== "");
+  }
+
+  // Check custom filters
+  function checkCustomFilters(textContent) {
+    for (const filter of settings.customFilters) {
+      const filterKeywords = filter.keywords
+        .split(",")
+        .map((keyword) => keyword.trim().toLowerCase())
+        .filter((keyword) => keyword !== "");
+
+      if (filterKeywords.some((word) => textContent.includes(word))) {
+        return { filtered: true, reason: filter.message || "🚫 Özel filtre" };
+      }
     }
+    return { filtered: false };
+  }
 
-    // Get GROK keywords from settings
-    function getGrokKeywords() {
-        return settings.grokKeywords
-            .split(',')
-            .map(keyword => keyword.trim().toLowerCase())
-            .filter(keyword => keyword !== '');
+  // Throttled observer for better performance
+  function throttledObserver() {
+    let timeout;
+    return function () {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        processNewContent();
+      }, 200);
+    };
+  }
+
+  const optimizedObserver = throttledObserver();
+
+  // Keyboard shortcuts
+  function redirectToOperaGX(event) {
+    if (!settings.shortcutsEnabled) return;
+
+    if (event.altKey && event.shiftKey && event.key === "O") {
+      window.open("https://www.opera.com/tr/gx", "_blank");
+    } else if (event.altKey && event.shiftKey && event.key === "I") {
+      window.open("https://x.com/operagxturkiye", "_blank");
+    } else if (event.altKey && event.shiftKey && event.key === "K") {
+      toggleSettingsPanel();
     }
+  }
 
-    // Check custom filters
-    function checkCustomFilters(textContent) {
-        for (const filter of settings.customFilters) {
-            const filterKeywords = filter.keywords
-                .split(',')
-                .map(keyword => keyword.trim().toLowerCase())
-                .filter(keyword => keyword !== '');
+  document.addEventListener("keydown", redirectToOperaGX);
 
-            if (filterKeywords.some(word => textContent.includes(word))) {
-                return { filtered: true, reason: filter.message || '🚫 Özel filtre' };
-            }
-        }
-        return { filtered: false };
-    }
+  // Main observer for filtering content
+  const observer = new MutationObserver(() => {
+    if (!settings.isEnabled) return;
 
-    // Throttled observer for better performance
-    function throttledObserver() {
-        let timeout;
-        return function() {
-            if (timeout) clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                processNewContent();
-            }, 200);
-        };
-    }
+    const keywords = getAllKeywords();
+    const specialAccounts = getSpecialAccounts();
+    const grokKeywords = getGrokKeywords();
 
-    const optimizedObserver = throttledObserver();
+    document.querySelectorAll("article").forEach((article) => {
+      if (article.getAttribute("data-processed")) return;
 
-    // Keyboard shortcuts
-    function redirectToOperaGX(event) {
-        if (!settings.shortcutsEnabled) return;
+      const textContent = article.innerText.toLowerCase();
+      let filterReason = "";
+      let shouldFilter = false;
 
-        if (event.altKey && event.shiftKey && event.key === 'O') {
-            window.open('https://www.opera.com/tr/gx', '_blank');
-        } else if (event.altKey && event.shiftKey && event.key === 'I') {
-            window.open('https://x.com/operagxturkiye', '_blank');
-        } else if (event.altKey && event.shiftKey && event.key === 'K') {
-            toggleSettingsPanel();
-        }
-    }
+      // Check for special accounts
+      const usernameElements = article.querySelectorAll(
+        '[data-testid="User-Name"]'
+      );
+      let isSpecialAccount = false;
 
-    document.addEventListener('keydown', redirectToOperaGX);
+      usernameElements.forEach((element) => {
+        const usernameText = element.textContent.toLowerCase();
 
-    // Main observer for filtering content
-    const observer = new MutationObserver(() => {
-        if (!settings.isEnabled) return;
-
-        const keywords = getAllKeywords();
-        const specialAccounts = getSpecialAccounts();
-        const grokKeywords = getGrokKeywords();
-
-        document.querySelectorAll('article').forEach(article => {
-            if (article.getAttribute('data-processed')) return;
-
-            const textContent = article.innerText.toLowerCase();
-            let filterReason = '';
-            let shouldFilter = false;
-
-            // Check for special accounts
-            const usernameElements = article.querySelectorAll('[data-testid="User-Name"]');
-            let isSpecialAccount = false;
-
-            usernameElements.forEach(element => {
-                const usernameText = element.textContent.toLowerCase();
-
-                specialAccounts.forEach(account => {
-                    if (usernameText.includes('@' + account)) {
-                        filterReason = 'Bu kişi rende binasına hizmet ediyor';
-                        shouldFilter = true;
-                        isSpecialAccount = true;
-                    }
-                });
-            });
-
-            // If not a special account, check other filters
-            if (!isSpecialAccount) {
-                // Check for GROK account
-                const isGrokAccount = Array.from(usernameElements).some(el =>
-                    el.textContent.toLowerCase().includes('@grok'));
-
-                if (isGrokAccount) {
-                    filterReason = 'GROK tarafından yazılmıştır';
-                    shouldFilter = true;
-                }
-                // Check for GROK keywords
-                else if (grokKeywords.some(word => textContent.includes(word))) {
-                    filterReason = 'GROK çağrılmıştır';
-                    shouldFilter = true;
-                }
-                // Check custom filters
-                else {
-                    const customFilterResult = checkCustomFilters(textContent);
-                    if (customFilterResult.filtered) {
-                        filterReason = customFilterResult.reason;
-                        shouldFilter = true;
-                    }
-                    // Check regular keywords
-                    else if (keywords.some(word => textContent.includes(word))) {
-                        filterReason = '🚫 KİTLELERİ UYUTMA ARACI';
-                        shouldFilter = true;
-                    }
-                }
-            }
-
-            if (shouldFilter) {
-                if (settings.filterMode === 'blur') {
-                    blurContent(article, filterReason);
-                } else {
-                    hideContent(article);
-                }
-
-                article.setAttribute('data-processed', 'true');
-                article.setAttribute('data-filter-reason', filterReason);
-            }
+        specialAccounts.forEach((account) => {
+          if (usernameText.includes("@" + account)) {
+            filterReason = "Bu kişi rende binasına hizmet ediyor";
+            shouldFilter = true;
+            isSpecialAccount = true;
+          }
         });
+      });
+
+      // If not a special account, check other filters
+      if (!isSpecialAccount) {
+        // Check for GROK account
+        const isGrokAccount = Array.from(usernameElements).some((el) =>
+          el.textContent.toLowerCase().includes("@grok")
+        );
+
+        if (isGrokAccount) {
+          filterReason = "GROK tarafından yazılmıştır";
+          shouldFilter = true;
+        }
+        // Check for GROK keywords
+        else if (grokKeywords.some((word) => textContent.includes(word))) {
+          filterReason = "GROK çağrılmıştır";
+          shouldFilter = true;
+        }
+        // Check custom filters
+        else {
+          const customFilterResult = checkCustomFilters(textContent);
+          if (customFilterResult.filtered) {
+            filterReason = customFilterResult.reason;
+            shouldFilter = true;
+          }
+          // Check regular keywords
+          else if (keywords.some((word) => textContent.includes(word))) {
+            filterReason = "🚫 KİTLELERİ UYUTMA ARACI";
+            shouldFilter = true;
+          }
+        }
+      }
+
+      if (shouldFilter) {
+        if (settings.filterMode === "blur") {
+          blurContent(article, filterReason);
+        } else {
+          hideContent(article);
+        }
+
+        article.setAttribute("data-processed", "true");
+        article.setAttribute("data-filter-reason", filterReason);
+      }
+    });
+  });
+
+  // Filtering functions
+  function blurContent(article, reason) {
+    const blurAmount =
+      filterOptions.strength[settings.filterStrength]?.blurAmount || "8px";
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+    wrapper.style.display = "inline-block";
+    wrapper.style.width = "100%";
+
+    const parent = article.parentNode;
+    parent.replaceChild(wrapper, article);
+    wrapper.appendChild(article);
+
+    article.style.filter = `blur(${blurAmount})`;
+
+    const overlay = document.createElement("div");
+    overlay.innerText = reason;
+    overlay.style.position = "absolute";
+    overlay.style.top = "50%";
+    overlay.style.left = "50%";
+    overlay.style.transform = "translate(-50%, -50%)";
+    overlay.style.backgroundColor = "rgba(255, 85, 85, 0.9)";
+    overlay.style.color = "white";
+    overlay.style.padding = "10px 20px";
+    overlay.style.fontSize = "16px";
+    overlay.style.fontWeight = "bold";
+    overlay.style.zIndex = "10000";
+    overlay.style.borderRadius = "8px";
+    overlay.style.pointerEvents = "none";
+    overlay.style.textAlign = "center";
+    overlay.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+    wrapper.appendChild(overlay);
+
+    const clickOverlay = document.createElement("div");
+    clickOverlay.style.position = "absolute";
+    clickOverlay.style.top = "0";
+    clickOverlay.style.left = "0";
+    clickOverlay.style.width = "100%";
+    clickOverlay.style.height = "100%";
+    clickOverlay.style.zIndex = "9999";
+    clickOverlay.style.cursor = "pointer";
+    clickOverlay.title = "İçeriği görmek için tıkla";
+
+    clickOverlay.addEventListener("click", function (e) {
+      e.stopPropagation();
+      wrapper.removeChild(overlay);
+      wrapper.removeChild(clickOverlay);
+      article.style.filter = "none";
     });
 
-    // Filtering functions
-    function blurContent(article, reason) {
-        const blurAmount = filterOptions.strength[settings.filterStrength]?.blurAmount || '8px';
+    wrapper.appendChild(clickOverlay);
+  }
 
-        const wrapper = document.createElement('div');
-        wrapper.style.position = 'relative';
-        wrapper.style.display = 'inline-block';
-        wrapper.style.width = '100%';
+  function hideContent(article) {
+    article.style.display = "none";
+  }
 
-        const parent = article.parentNode;
-        parent.replaceChild(wrapper, article);
-        wrapper.appendChild(article);
+  // Settings panel functions
+  function createSettingsPanel() {
+    const panel = document.createElement("div");
+    panel.id = "uaSettingsPanel";
 
-        article.style.filter = `blur(${blurAmount})`;
-
-        const overlay = document.createElement('div');
-        overlay.innerText = reason;
-        overlay.style.position = 'absolute';
-        overlay.style.top = '50%';
-        overlay.style.left = '50%';
-        overlay.style.transform = 'translate(-50%, -50%)';
-        overlay.style.backgroundColor = 'rgba(255, 85, 85, 0.9)';
-        overlay.style.color = 'white';
-        overlay.style.padding = '10px 20px';
-        overlay.style.fontSize = '16px';
-        overlay.style.fontWeight = 'bold';
-        overlay.style.zIndex = '10000';
-        overlay.style.borderRadius = '8px';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.textAlign = 'center';
-        overlay.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-        wrapper.appendChild(overlay);
-
-        const clickOverlay = document.createElement('div');
-        clickOverlay.style.position = 'absolute';
-        clickOverlay.style.top = '0';
-        clickOverlay.style.left = '0';
-        clickOverlay.style.width = '100%';
-        clickOverlay.style.height = '100%';
-        clickOverlay.style.zIndex = '9999';
-        clickOverlay.style.cursor = 'pointer';
-        clickOverlay.title = 'İçeriği görmek için tıkla';
-
-        clickOverlay.addEventListener('click', function(e) {
-            e.stopPropagation();
-            wrapper.removeChild(overlay);
-            wrapper.removeChild(clickOverlay);
-            article.style.filter = 'none';
-        });
-
-        wrapper.appendChild(clickOverlay);
-    }
-
-    function hideContent(article) {
-        article.style.display = 'none';
-    }
-
-    // Settings panel functions
-    function createSettingsPanel() {
-        const panel = document.createElement('div');
-        panel.id = 'uaSettingsPanel';
-
-        panel.innerHTML = `
+    panel.innerHTML = `
             <h2>Kitleleri Uyutma Aracı Ayarları</h2>
 
             <div class="ua-tabs">
@@ -601,32 +614,67 @@
                             <div class="ua-section-title">Genel Ayarlar</div>
                             <label for="uaEnabled">Eklenti Durumu:</label>
                             <select id="uaEnabled">
-                                <option value="true" ${settings.isEnabled ? 'selected' : ''}>Aktif</option>
-                                <option value="false" ${!settings.isEnabled ? 'selected' : ''}>Pasif</option>
+                                <option value="true" ${
+                                  settings.isEnabled ? "selected" : ""
+                                }>Aktif</option>
+                                <option value="false" ${
+                                  !settings.isEnabled ? "selected" : ""
+                                }>Pasif</option>
                             </select>
 
                             <label for="uaFilterMode">Filtreleme Modu:</label>
                             <select id="uaFilterMode">
-                                <option value="blur" ${settings.filterMode === 'blur' ? 'selected' : ''}>Bulanıklaştır</option>
-                                <option value="hide" ${settings.filterMode === 'hide' ? 'selected' : ''}>Tamamen Gizle</option>
+                                <option value="blur" ${
+                                  settings.filterMode === "blur"
+                                    ? "selected"
+                                    : ""
+                                }>Bulanıklaştır</option>
+                                <option value="hide" ${
+                                  settings.filterMode === "hide"
+                                    ? "selected"
+                                    : ""
+                                }>Tamamen Gizle</option>
                             </select>
 
                             <label for="uaFilterStrength">Bulanıklık Seviyesi:</label>
                             <select id="uaFilterStrength">
-                                ${Object.entries(filterOptions.strength).map(([key, option]) =>
-                                    `<option value="${key}" ${settings.filterStrength === key ? 'selected' : ''}>${option.label}</option>`).join('')}
+                                ${Object.entries(filterOptions.strength)
+                                  .map(
+                                    ([key, option]) =>
+                                      `<option value="${key}" ${
+                                        settings.filterStrength === key
+                                          ? "selected"
+                                          : ""
+                                      }>${option.label}</option>`
+                                  )
+                                  .join("")}
                             </select>
 
                             <label for="uaShortcutsEnabled">Klavye Kısayolları Aktif:</label>
                             <select id="uaShortcutsEnabled">
-                                <option value="true" ${settings.shortcutsEnabled ? 'selected' : ''}>Aktif</option>
-                                <option value="false" ${!settings.shortcutsEnabled ? 'selected' : ''}>Pasif</option>
+                                <option value="true" ${
+                                  settings.shortcutsEnabled ? "selected" : ""
+                                }>Aktif</option>
+                                <option value="false" ${
+                                  !settings.shortcutsEnabled ? "selected" : ""
+                                }>Pasif</option>
                             </select>
 
                             <label for="uaTheme">Tema:</label>
                             <select id="uaTheme">
-                                ${Object.keys(themes).map(theme =>
-                                    `<option value="${theme}" ${settings.theme === theme ? 'selected' : ''}>${theme.charAt(0).toUpperCase() + theme.slice(1)}</option>`).join('')}
+                                ${Object.keys(themes)
+                                  .map(
+                                    (theme) =>
+                                      `<option value="${theme}" ${
+                                        settings.theme === theme
+                                          ? "selected"
+                                          : ""
+                                      }>${
+                                        theme.charAt(0).toUpperCase() +
+                                        theme.slice(1)
+                                      }</option>`
+                                  )
+                                  .join("")}
                             </select>
                         </div>
 
@@ -654,11 +702,15 @@
                             <div class="ua-section-title">Filtrelenecek Hesaplar</div>
 
                             <label for="specialAccounts">Özel Hesaplar:</label>
-                            <textarea id="specialAccounts" placeholder="fahrettinaltun,06melihgokcek">${settings.specialAccounts}</textarea>
+                            <textarea id="specialAccounts" placeholder="fahrettinaltun,06melihgokcek">${
+                              settings.specialAccounts
+                            }</textarea>
                             <div class="ua-info">Virgülle ayırarak yazın. Örnek: hesapadi1,hesapadi2</div>
 
                             <label for="grokAccounts">GROK Hesapları:</label>
-                            <textarea id="grokAccounts" placeholder="grok,GROK,@grok">${settings.grokKeywords}</textarea>
+                            <textarea id="grokAccounts" placeholder="grok,GROK,@grok">${
+                              settings.grokKeywords
+                            }</textarea>
                             <div class="ua-info">Virgülle ayırarak yazın. Örnek: grok,GROK,@grok</div>
                         </div>
 
@@ -684,11 +736,15 @@
                             <div class="ua-section-title">Anahtar Kelime Filtreleri</div>
 
                             <label for="kitlelerUyutmaKeywords">Kitleleri Uyutma Kelimeleri:</label>
-                            <textarea id="kitlelerUyutmaKeywords" placeholder="futbol,maç,morinyo,mourinho">${settings.kitlelerUyutmaKeywords}</textarea>
+                            <textarea id="kitlelerUyutmaKeywords" placeholder="futbol,maç,morinyo,mourinho">${
+                              settings.kitlelerUyutmaKeywords
+                            }</textarea>
                             <div class="ua-info">Virgülle ayırarak yazın. Örnek: futbol,maç,gs,fb</div>
 
                             <label for="ekKeywords">Ek Anahtar Kelimeler:</label>
-                            <textarea id="ekKeywords" placeholder="deneme,test,filtre">${settings.ekKeywords}</textarea>
+                            <textarea id="ekKeywords" placeholder="deneme,test,filtre">${
+                              settings.ekKeywords
+                            }</textarea>
                             <div class="ua-info">Virgülle ayırarak yazın. Ekstra filtrelemek istediğiniz kelimeler</div>
                         </div>
 
@@ -713,14 +769,18 @@
                         <div class="ua-section">
                             <div class="ua-section-title">Özel Filtre Kategorileri</div>
                             <div id="customFiltersList">
-                                ${settings.customFilters.map((filter, index) => `
+                                ${settings.customFilters
+                                  .map(
+                                    (filter, index) => `
                                     <div class="ua-custom-filter" data-index="${index}">
                                         <input type="text" class="filter-name" value="${filter.name}" placeholder="Kategori Adı">
                                         <textarea class="filter-keywords" placeholder="Anahtar kelimeler">${filter.keywords}</textarea>
                                         <input type="text" class="filter-message" value="${filter.message}" placeholder="Filtreleme mesajı">
                                         <button class="ua-button ua-button-secondary delete-filter">Sil</button>
                                     </div>
-                                `).join('')}
+                                `
+                                  )
+                                  .join("")}
                             </div>
                             <button id="addNewFilter" class="ua-button ua-button-primary">Yeni Filtre Ekle</button>
                         </div>
@@ -774,251 +834,290 @@
             </div>
         `;
 
-        document.body.appendChild(panel);
+    document.body.appendChild(panel);
 
-        // Tab functionality
-        panel.querySelectorAll('.ua-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabName = this.getAttribute('data-tab');
-                panel.querySelectorAll('.ua-tab').forEach(t => t.classList.remove('active'));
-                panel.querySelectorAll('.ua-tab-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                panel.querySelector(`.ua-tab-content[data-tab="${tabName}"]`).classList.add('active');
-            });
-        });
+    // Tab functionality
+    panel.querySelectorAll(".ua-tab").forEach((tab) => {
+      tab.addEventListener("click", function () {
+        const tabName = this.getAttribute("data-tab");
+        panel
+          .querySelectorAll(".ua-tab")
+          .forEach((t) => t.classList.remove("active"));
+        panel
+          .querySelectorAll(".ua-tab-content")
+          .forEach((c) => c.classList.remove("active"));
+        this.classList.add("active");
+        panel
+          .querySelector(`.ua-tab-content[data-tab="${tabName}"]`)
+          .classList.add("active");
+      });
+    });
 
-        // Link buttons
-        panel.querySelectorAll('.ua-link-button').forEach(button => {
-            button.addEventListener('click', function() {
-                window.open(this.dataset.url, '_blank');
-            });
-        });
+    // Link buttons
+    panel.querySelectorAll(".ua-link-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        window.open(this.dataset.url, "_blank");
+      });
+    });
 
-        // Add new filter button
-        panel.querySelector('#addNewFilter').addEventListener('click', function() {
-            const newFilterDiv = document.createElement('div');
-            newFilterDiv.className = 'ua-custom-filter';
-            newFilterDiv.dataset.index = document.querySelectorAll('.ua-custom-filter').length;
-            newFilterDiv.innerHTML = `
+    // Add new filter button
+    panel.querySelector("#addNewFilter").addEventListener("click", function () {
+      const newFilterDiv = document.createElement("div");
+      newFilterDiv.className = "ua-custom-filter";
+      newFilterDiv.dataset.index =
+        document.querySelectorAll(".ua-custom-filter").length;
+      newFilterDiv.innerHTML = `
                 <input type="text" class="filter-name" placeholder="Kategori Adı">
                 <textarea class="filter-keywords" placeholder="Anahtar kelimeler"></textarea>
                 <input type="text" class="filter-message" placeholder="Filtreleme mesajı">
                 <button class="ua-button ua-button-secondary delete-filter">Sil</button>
             `;
-            document.getElementById('customFiltersList').appendChild(newFilterDiv);
+      document.getElementById("customFiltersList").appendChild(newFilterDiv);
 
-            newFilterDiv.querySelector('.delete-filter').addEventListener('click', function() {
-                newFilterDiv.remove();
-            });
+      newFilterDiv
+        .querySelector(".delete-filter")
+        .addEventListener("click", function () {
+          newFilterDiv.remove();
+        });
+    });
+
+    // Delete filter buttons
+    panel.querySelectorAll(".delete-filter").forEach((button) => {
+      button.addEventListener("click", function () {
+        this.closest(".ua-custom-filter").remove();
+      });
+    });
+
+    // Export filters
+    panel
+      .querySelector("#exportFilters")
+      .addEventListener("click", function () {
+        const filtersToExport = {
+          kitlelerUyutmaKeywords: document.getElementById(
+            "kitlelerUyutmaKeywords"
+          ).value,
+          ekKeywords: document.getElementById("ekKeywords").value,
+          specialAccounts: document.getElementById("specialAccounts").value,
+          grokKeywords: document.getElementById("grokAccounts").value,
+          customFilters: [],
+        };
+
+        document.querySelectorAll(".ua-custom-filter").forEach((filterDiv) => {
+          const name = filterDiv.querySelector(".filter-name").value;
+          const keywords = filterDiv.querySelector(".filter-keywords").value;
+          const message = filterDiv.querySelector(".filter-message").value;
+
+          if (name && keywords) {
+            filtersToExport.customFilters.push({ name, keywords, message });
+          }
         });
 
-        // Delete filter buttons
-        panel.querySelectorAll('.delete-filter').forEach(button => {
-            button.addEventListener('click', function() {
-                this.closest('.ua-custom-filter').remove();
-            });
-        });
+        const dataStr =
+          "data:text/json;charset=utf-8," +
+          encodeURIComponent(JSON.stringify(filtersToExport));
+        const downloadAnchorNode = document.createElement("a");
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute(
+          "download",
+          "kitleleri_uyutma_filtreleri.json"
+        );
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+      });
 
-        // Export filters
-        panel.querySelector('#exportFilters').addEventListener('click', function() {
-            const filtersToExport = {
-                kitlelerUyutmaKeywords: document.getElementById('kitlelerUyutmaKeywords').value,
-                ekKeywords: document.getElementById('ekKeywords').value,
-                specialAccounts: document.getElementById('specialAccounts').value,
-                grokKeywords: document.getElementById('grokAccounts').value,
-                customFilters: []
-            };
+    // Import filters
+    panel
+      .querySelector("#importFilters")
+      .addEventListener("click", function () {
+        document.getElementById("importFiltersInput").click();
+      });
 
-            document.querySelectorAll('.ua-custom-filter').forEach(filterDiv => {
-                const name = filterDiv.querySelector('.filter-name').value;
-                const keywords = filterDiv.querySelector('.filter-keywords').value;
-                const message = filterDiv.querySelector('.filter-message').value;
+    panel
+      .querySelector("#importFiltersInput")
+      .addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-                if (name && keywords) {
-                    filtersToExport.customFilters.push({ name, keywords, message });
-                }
-            });
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const importedFilters = JSON.parse(e.target.result);
 
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(filtersToExport));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "kitleleri_uyutma_filtreleri.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        });
+            if (importedFilters.kitlelerUyutmaKeywords)
+              document.getElementById("kitlelerUyutmaKeywords").value =
+                importedFilters.kitlelerUyutmaKeywords;
 
-        // Import filters
-        panel.querySelector('#importFilters').addEventListener('click', function() {
-            document.getElementById('importFiltersInput').click();
-        });
+            if (importedFilters.ekKeywords)
+              document.getElementById("ekKeywords").value =
+                importedFilters.ekKeywords;
 
-        panel.querySelector('#importFiltersInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            if (importedFilters.specialAccounts)
+              document.getElementById("specialAccounts").value =
+                importedFilters.specialAccounts;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedFilters = JSON.parse(e.target.result);
+            if (importedFilters.grokKeywords)
+              document.getElementById("grokAccounts").value =
+                importedFilters.grokKeywords;
 
-                    if (importedFilters.kitlelerUyutmaKeywords)
-                        document.getElementById('kitlelerUyutmaKeywords').value = importedFilters.kitlelerUyutmaKeywords;
+            if (
+              importedFilters.customFilters &&
+              importedFilters.customFilters.length > 0
+            ) {
+              document.getElementById("customFiltersList").innerHTML = "";
 
-                    if (importedFilters.ekKeywords)
-                        document.getElementById('ekKeywords').value = importedFilters.ekKeywords;
-
-                    if (importedFilters.specialAccounts)
-                        document.getElementById('specialAccounts').value = importedFilters.specialAccounts;
-
-                    if (importedFilters.grokKeywords)
-                        document.getElementById('grokAccounts').value = importedFilters.grokKeywords;
-
-                    if (importedFilters.customFilters && importedFilters.customFilters.length > 0) {
-                        document.getElementById('customFiltersList').innerHTML = '';
-
-                        importedFilters.customFilters.forEach((filter, index) => {
-                            const newFilterDiv = document.createElement('div');
-                            newFilterDiv.className = 'ua-custom-filter';
-                            newFilterDiv.dataset.index = index;
-                            newFilterDiv.innerHTML = `
+              importedFilters.customFilters.forEach((filter, index) => {
+                const newFilterDiv = document.createElement("div");
+                newFilterDiv.className = "ua-custom-filter";
+                newFilterDiv.dataset.index = index;
+                newFilterDiv.innerHTML = `
                                 <input type="text" class="filter-name" value="${filter.name}" placeholder="Kategori Adı">
                                 <textarea class="filter-keywords" placeholder="Anahtar kelimeler">${filter.keywords}</textarea>
                                 <input type="text" class="filter-message" value="${filter.message}" placeholder="Filtreleme mesajı">
                                 <button class="ua-button ua-button-secondary delete-filter">Sil</button>
                             `;
-                            document.getElementById('customFiltersList').appendChild(newFilterDiv);
+                document
+                  .getElementById("customFiltersList")
+                  .appendChild(newFilterDiv);
 
-                            newFilterDiv.querySelector('.delete-filter').addEventListener('click', function() {
-                                newFilterDiv.remove();
-                            });
-                        });
-                    }
+                newFilterDiv
+                  .querySelector(".delete-filter")
+                  .addEventListener("click", function () {
+                    newFilterDiv.remove();
+                  });
+              });
+            }
 
-                    showNotification('Filtreler başarıyla içe aktarıldı!');
-                } catch (error) {
-                    showNotification('Filtreler içe aktarılırken bir hata oluştu.');
-                    console.error('Filter import error:', error);
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        // Save button
-        document.getElementById('uaSaveButton').addEventListener('click', saveSettings);
-
-        // Close button
-        document.getElementById('uaCloseButton').addEventListener('click', function() {
-            document.body.removeChild(panel);
-        });
-
-        return panel;
-    }
-
-    function saveSettings() {
-        const newSettings = {
-            filterMode: document.getElementById('uaFilterMode').value,
-            kitlelerUyutmaKeywords: document.getElementById('kitlelerUyutmaKeywords').value,
-            ekKeywords: document.getElementById('ekKeywords').value,
-            specialAccounts: document.getElementById('specialAccounts').value,
-            grokKeywords: document.getElementById('grokAccounts').value,
-            isEnabled: document.getElementById('uaEnabled').value === 'true',
-            shortcutsEnabled: document.getElementById('uaShortcutsEnabled').value === 'true',
-            theme: document.getElementById('uaTheme').value,
-            filterStrength: document.getElementById('uaFilterStrength').value,
-            customFilters: []
+            showNotification("Filtreler başarıyla içe aktarıldı!");
+          } catch (error) {
+            showNotification("Filtreler içe aktarılırken bir hata oluştu.");
+            console.error("Filter import error:", error);
+          }
         };
+        reader.readAsText(file);
+      });
 
-        // Gather custom filters
-        document.querySelectorAll('.ua-custom-filter').forEach(filterDiv => {
-            const name = filterDiv.querySelector('.filter-name').value;
-            const keywords = filterDiv.querySelector('.filter-keywords').value;
-            const message = filterDiv.querySelector('.filter-message').value;
+    // Save button
+    document
+      .getElementById("uaSaveButton")
+      .addEventListener("click", saveSettings);
 
-            if (name && keywords) {
-                newSettings.customFilters.push({ name, keywords, message });
-            }
-        });
+    // Close button
+    document
+      .getElementById("uaCloseButton")
+      .addEventListener("click", function () {
+        document.body.removeChild(panel);
+      });
 
-        settings = newSettings;
-        GM_setValue('uaSettings', settings);
+    return panel;
+  }
 
-        // Reset processed articles
-        document.querySelectorAll('[data-processed]').forEach(el => {
-            el.removeAttribute('data-processed');
-            el.removeAttribute('data-filter-reason');
+  function saveSettings() {
+    const newSettings = {
+      filterMode: document.getElementById("uaFilterMode").value,
+      kitlelerUyutmaKeywords: document.getElementById("kitlelerUyutmaKeywords")
+        .value,
+      ekKeywords: document.getElementById("ekKeywords").value,
+      specialAccounts: document.getElementById("specialAccounts").value,
+      grokKeywords: document.getElementById("grokAccounts").value,
+      isEnabled: document.getElementById("uaEnabled").value === "true",
+      shortcutsEnabled:
+        document.getElementById("uaShortcutsEnabled").value === "true",
+      theme: document.getElementById("uaTheme").value,
+      filterStrength: document.getElementById("uaFilterStrength").value,
+      customFilters: [],
+    };
 
-            if (el.style.filter) {
-                el.style.filter = 'none';
+    // Gather custom filters
+    document.querySelectorAll(".ua-custom-filter").forEach((filterDiv) => {
+      const name = filterDiv.querySelector(".filter-name").value;
+      const keywords = filterDiv.querySelector(".filter-keywords").value;
+      const message = filterDiv.querySelector(".filter-message").value;
 
-                const parent = el.parentNode;
-                if (parent && parent.parentNode && parent.tagName === 'DIV') {
-                    const grandParent = parent.parentNode;
-                    grandParent.replaceChild(el, parent);
-                }
-            }
+      if (name && keywords) {
+        newSettings.customFilters.push({ name, keywords, message });
+      }
+    });
 
-            if (el.style.display === 'none') {
-                el.style.display = '';
-            }
-        });
+    settings = newSettings;
+    GM_setValue("uaSettings", settings);
 
-        showNotification('Ayarlar kaydedildi ve uygulandı!');
+    // Reset processed articles
+    document.querySelectorAll("[data-processed]").forEach((el) => {
+      el.removeAttribute("data-processed");
+      el.removeAttribute("data-filter-reason");
 
-        const panel = document.getElementById('uaSettingsPanel');
-        if (panel) {
-            document.body.removeChild(panel);
+      if (el.style.filter) {
+        el.style.filter = "none";
+
+        const parent = el.parentNode;
+        if (parent && parent.parentNode && parent.tagName === "DIV") {
+          const grandParent = parent.parentNode;
+          grandParent.replaceChild(el, parent);
         }
+      }
 
-        // Reapply theme
-        applyTheme();
+      if (el.style.display === "none") {
+        el.style.display = "";
+      }
+    });
 
-        // Restart observer
-        observer.disconnect();
-        observer.observe(document.body, { childList: true, subtree: true });
+    showNotification("Ayarlar kaydedildi ve uygulandı!");
+
+    const panel = document.getElementById("uaSettingsPanel");
+    if (panel) {
+      document.body.removeChild(panel);
     }
 
-    function toggleSettingsPanel() {
-        let panel = document.getElementById('uaSettingsPanel');
+    // Reapply theme
+    applyTheme();
 
-        if (panel) {
-            document.body.removeChild(panel);
-        } else {
-            panel = createSettingsPanel();
-            panel.style.display = 'block';
-        }
-    }
-
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.className = 'ua-notification';
-        notification.textContent = message;
-
-        document.body.appendChild(notification);
-
-        setTimeout(function() {
-            document.body.removeChild(notification);
-        }, 3000);
-    }
-
-    // Menu commands
-    GM_registerMenuCommand('⚙️ Ayarları Aç', toggleSettingsPanel);
-    GM_registerMenuCommand('🔄 Yenile', function() {
-        location.reload();
-    });
-    GM_registerMenuCommand('🌐 Opera GX Sayfasına Git', function() {
-        window.open('https://www.opera.com/tr/gx', '_blank');
-    });
-    GM_registerMenuCommand('🐦 DogukanparIak Profiline Git', function() {
-        window.open('https://x.com/dogukanparIak', '_blank');
-    });
-    GM_registerMenuCommand('🐦 Opera GX Türkiye X Hesabı', function() {
-        window.open('https://x.com/operagxturkiye', '_blank');
-    });
-    GM_registerMenuCommand('🐦 Dursunator Profiline Git', function() {
-        window.open('https://x.com/dursunator', '_blank');
-    });
-
-    // Start observing
+    // Restart observer
+    observer.disconnect();
     observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function toggleSettingsPanel() {
+    let panel = document.getElementById("uaSettingsPanel");
+
+    if (panel) {
+      document.body.removeChild(panel);
+    } else {
+      panel = createSettingsPanel();
+      panel.style.display = "block";
+    }
+  }
+
+  function showNotification(message) {
+    const notification = document.createElement("div");
+    notification.className = "ua-notification";
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(function () {
+      document.body.removeChild(notification);
+    }, 3000);
+  }
+
+  // Menu commands
+  GM_registerMenuCommand("⚙️ Ayarları Aç", toggleSettingsPanel);
+  GM_registerMenuCommand("🔄 Yenile", function () {
+    location.reload();
+  });
+  GM_registerMenuCommand("🌐 Opera GX Sayfasına Git", function () {
+    window.open("https://www.opera.com/tr/gx", "_blank");
+  });
+  GM_registerMenuCommand("🐦 DogukanparIak Profiline Git", function () {
+    window.open("https://x.com/dogukanparIak", "_blank");
+  });
+  GM_registerMenuCommand("🐦 Opera GX Türkiye X Hesabı", function () {
+    window.open("https://x.com/operagxturkiye", "_blank");
+  });
+  GM_registerMenuCommand("🐦 Dursunator Profiline Git", function () {
+    window.open("https://x.com/dursunator", "_blank");
+  });
+
+  // Start observing
+  observer.observe(document.body, { childList: true, subtree: true });
 })();

@@ -10,20 +10,12 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://x.com/*",
-        "https://twitter.com/*"
-      ],
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": ["X(Twitter)Filter.js"],
       "run_at": "document_end"
     }
   ],
-  "permissions": [
-    "storage",
-    "contextMenus"
-  ],
-  "web_accessible_resources": [
-    "X(Twitter)Filter.js"
-  ],
+  "permissions": ["storage", "contextMenus"],
+  "web_accessible_resources": ["X(Twitter)Filter.js"],
   "homepage_url": "https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici"
 }

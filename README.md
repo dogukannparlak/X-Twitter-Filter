@@ -17,7 +17,7 @@ Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kel
 ## 🛠 Kurulum
 
 1. **Tampermonkey** veya **Violentmonkey** gibi bir kullanıcı betiği yöneticisini tarayıcınıza yükleyin.
-2. [Kitleleri Uyutma Aracı Engelleyici](https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X\(Twitter\)Filter.js) betiğini yüklemek için [bu bağlantıya](https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X\(Twitter\)Filter.js) tıklayın.
+2. [Kitleleri Uyutma Aracı Engelleyici](<https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js>) betiğini yüklemek için [bu bağlantıya](<https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js>) tıklayın.
 3. Betiği etkinleştirin ve X (Twitter) üzerinde test edin.
 
 ## 🎛 Kullanım
@@ -39,9 +39,6 @@ Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kel
 - **JavaScript (UserScript) tabanlıdır.**
 - **Geliştirme ve güncellemeler için:** [GitHub Sayfası](https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici)
 
-## 📜 Lisans
-
-Bu proje **MIT Lisansı** altında sunulmaktadır. Kullanım serbesttir, ancak geliştiricilere atıfta bulunulması önerilir.
 
 ## ✨ Katkıda Bulunun
 
@@ -55,17 +52,20 @@ Projeyi yerel ortamınıza çekmek için aşağıdaki komutu terminalde çalış
 git clone https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici.git
 cd Kitleleri_Uyutma_Engelleyici
 ```
+
 Güncellemeleri almak için:
+
 ```sh
 git pull origin main
 ```
 
 ## 📢 Geliştiriciler
 
-- **[Dogukan Parlak](https://x.com/dogukanparIak)** - X (Twitter) Profili  
-- **[Dursunator](https://x.com/dursunator)** - X (Twitter) Profili  
+- **[Dogukan Parlak](https://x.com/dogukanparIak)** - X (Twitter) Profili
+- **[Dursunator](https://x.com/dursunator)** - X (Twitter) Profili
 
 Bu betik ile sosyal medyada daha iyi bir deneyim yaşayın! 🎭🚀
 
+## 📜 Lisans
 
-
+Bu proje **MIT Lisansı** altında sunulmaktadır. Kullanım serbesttir, ancak geliştiricilere atıfta bulunulması önerilir.
