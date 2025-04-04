@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Kitleleri Uyutma Aracı Engelleyici",
+  "version": "2.0",
+  "description": "Bu eklenti, gündemi değiştirmek isteyen ve kitleleri uyutmak için ortaya çıkan gönderileri engellemek için tasarlanmıştır. Gelişmiş filtreleme özellikleri içerir.",
+  "author": "Opera GX Türkiye /dogukanparIak /dursunator",
+  "icons": {
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": ["X(Twitter)Filter.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "contextMenus"
+  ],
+  "web_accessible_resources": [
+    "X(Twitter)Filter.js"
+  ],
+  "homepage_url": "https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici"
+}
