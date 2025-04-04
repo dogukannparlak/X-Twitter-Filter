@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kitleleri Uyutma Aracı Engelleyici (drsn vers)
 // @namespace    http://x.com/operagxturkiye
-// @version      1.9
+// @version      1.10
 // @description  Bu eklenti, gündemi değiştirmek isteyen ve kitleleri uyutmak için ortaya çıkan gönderileri engellemek için tasarlanmıştır.
 // @author       Opera GX Türkiye / dursunator
 // @match        https://x.com/*
@@ -226,7 +226,10 @@
         document.querySelectorAll('article').forEach(article => {
             if (article.getAttribute('data-processed')) return;
 
-            const textContent = article.innerText.toLowerCase();
+            const tweetTextElement = article.querySelector('[data-testid="tweetText"]');
+            if (!tweetTextElement) return;
+
+            const textContent = tweetTextElement.innerText.toLowerCase();
             if (keywords.some(word => textContent.includes(word))) {
                 if (settings.filterMode === 'blur') {
                     blurContent(article);
