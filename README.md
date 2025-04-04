@@ -1,59 +1,71 @@
 # Kitleleri Uyutma Aracı Engelleyici
 
-Bu kullanıcı betiği (UserScript), X (Twitter) üzerindeki belirli kelimeleri içeren gönderileri otomatik olarak bulanıklaştırarak gizler. Kullanıcı, belirlenen kelimeleri değiştirebilir veya filtreyi kapatabilir.
+## 📌 Proje Açıklaması
+
+Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kelimeleri içeren gönderileri bulanıklaştırmak veya gizlemek için tasarlanmıştır. Gündemi değiştirmek ve kitleleri yönlendirmek amacıyla kullanılan içerikleri filtreleyerek daha temiz bir sosyal medya deneyimi sunar.
 
 ## 🚀 Özellikler
 
-✅ **Belirlenen kelimeleri içeren gönderileri bulanıklaştırır.**  
-✅ **Kullanıcı yeni kelimeler ekleyebilir veya çıkarabilir.**  
-✅ **Sansürlenen içerikler tekrar görünür hale getirilebilir.**  
-✅ **Kolay kullanım için ayar butonu eklenmiştir.**  
-✅ **Hafif ve hızlı çalışır.**
+- Belirtilen anahtar kelimelere sahip gönderileri bulanıklaştırma veya tamamen gizleme.
+- Özel hesapları filtreleme.
+- GROK gibi belirli bot hesaplarını tespit edip engelleme.
+- Özel tema seçenekleri (Dracula, Nord, Özel Renkler).
+- Kendi belirleyeceğiniz özel filtreler.
+- Kullanıcı dostu ayarlar paneli.
+- Klavye kısayolları ile hızlı erişim.
 
----
+## 🛠 Kurulum
 
-## 📥 Kurulum
+1. **Tampermonkey** veya **Violentmonkey** gibi bir kullanıcı betiği yöneticisini tarayıcınıza yükleyin.
+2. [Kitleleri Uyutma Aracı Engelleyici](https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X\(Twitter\)Filter.js) betiğini yüklemek için [bu bağlantıya](https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X\(Twitter\)Filter.js) tıklayın.
+3. Betiği etkinleştirin ve X (Twitter) üzerinde test edin.
 
-### **1️⃣ Tarayıcıya UserScript Yöneticisi Ekle**
-Bu betiği çalıştırmak için bir kullanıcı betiği yöneticisine ihtiyacınız var.
+## 🎛 Kullanım
 
-🔹 **Tampermonkey (Önerilen)**: [Chrome Web Store](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  
-🔹 **Tampermonkey Firefox Add-ons**: [Firefox Eklenti Sayfası](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
+- **Ayarlar Menüsü**: Sağ üst köşeden veya `Alt + Shift + K` kısayolu ile açabilirsiniz.
+- **Filtreleme Seçenekleri**: Belirli kelimeler veya hesapları engellemek için ayarları özelleştirin.
+- **Tema Değişimi**: Dracula, Nord veya kendi özel temanızı oluşturabilirsiniz.
+- **Hızlı Erişim**:
+  - `Alt + Shift + O`: Opera GX sayfasını açar.
+  - `Alt + Shift + I`: Opera GX Türkiye X hesabını açar.
 
-Tampermonkey'i yükledikten sonra, tarayıcınızın sağ üst köşesinde bir Tampermonkey simgesi göreceksiniz.
+## 📌 Desteklenen Siteler
 
-### **2️⃣ Kullanıcı Betiğini (UserScript) Yükleyin**
-1. Tarayıcınızda **Tampermonkey simgesine tıklayın** ve "Dashboard" (Kontrol Paneli) seçeneğini seçin.
-2. "Create a new script" (Yeni betik oluştur) butonuna tıklayın.
-3. Açılan editörde **varsayılan kodları silin** ve bu betiğin kodunu yapıştırın.
-4. **Kaydedin (Ctrl + S veya File > Save).**
-
-### **3️⃣ Betiği Etkinleştirin**
-- X (Twitter) sitesini açın ve sayfayı yenileyin.
-- Eğer çalışmazsa, **Tampermonkey menüsünden betiğin aktif olduğundan emin olun.**
-
----
-
-## ⚙️ Kullanım
-
-### **Filtre Ayarlarını Değiştirme**
-- Sağ alt köşede **"⚙️ Filtre Ayarları"** butonu bulunur.
-- Yeni bir kelime eklemek için butona tıklayın ve kelimeyi girin.
-- Eğer mevcut bir kelimeyi kaldırmak isterseniz, aynı kelimeyi girerek kaldırabilirsiniz.
-
-### **Sansürü Kaldırma**
-- Bulanıklaştırılmış gönderinin ortasındaki kırmızı uyarı metnine tıklayarak sansürü kaldırabilirsiniz.
-
----
+- `https://x.com/*`
+- `https://twitter.com/*`
 
 ## 🔧 Teknik Detaylar
 
-- Engellenen kelimeler **localStorage**'da saklanır, böylece tarayıcı kapandığında bile korunur.
-- İçerikleri izlemek için **MutationObserver yerine setInterval()** kullanılır (daha az CPU tüketir).
-- UI tarafında daha iyi bir deneyim için **özel stil ve etkileşimli butonlar** eklenmiştir.
-
----
+- **JavaScript (UserScript) tabanlıdır.**
+- **Geliştirme ve güncellemeler için:** [GitHub Sayfası](https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici)
 
 ## 📜 Lisans
-Bu proje açık kaynaklıdır ve MIT Lisansı ile lisanslanmıştır. Kullanım ve geliştirme serbesttir! 🎉
+
+Bu proje **MIT Lisansı** altında sunulmaktadır. Kullanım serbesttir, ancak geliştiricilere atıfta bulunulması önerilir.
+
+## ✨ Katkıda Bulunun
+
+Geliştirmelere katkıda bulunmak isterseniz, **Pull Request** gönderebilir veya önerilerinizi **Issues** sekmesinde paylaşabilirsiniz.
+
+### 📥 Depoyu Klonlama
+
+Projeyi yerel ortamınıza çekmek için aşağıdaki komutu terminalde çalıştırabilirsiniz:
+
+```sh
+git clone https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici.git
+cd Kitleleri_Uyutma_Engelleyici
+```
+Güncellemeleri almak için:
+```sh
+git pull origin main
+```
+
+## 📢 Geliştiriciler
+
+- **[Dogukan Parlak](https://x.com/dogukanparIak)** - X (Twitter) Profili  
+- **[Dursunator](https://x.com/dursunator)** - X (Twitter) Profili  
+
+Bu betik ile sosyal medyada daha iyi bir deneyim yaşayın! 🎭🚀
+
+
 
