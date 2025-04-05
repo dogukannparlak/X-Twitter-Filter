@@ -44,6 +44,11 @@ Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kel
 
 Geliştirmelere katkıda bulunmak isterseniz, **Pull Request** gönderebilir veya önerilerinizi **Issues** sekmesinde paylaşabilirsiniz.
 
+## 📊 İstatistikler
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?repo=dogukannparlak/Kitleleri_Uyutma_Engelleyici&label=Repo%20views&color=0e75b6&style=plastic" alt="dogukannparlak/Kitleleri_Uyutma_Engelleyici" />
+</p>
+ 
 ### 📥 Depoyu Klonlama
 
 Projeyi yerel ortamınıza çekmek için aşağıdaki komutu terminalde çalıştırabilirsiniz:
