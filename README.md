@@ -46,7 +46,7 @@ Geliştirmelere katkıda bulunmak isterseniz, **Pull Request** gönderebilir vey
 
 ## 📊 İstatistikler
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?repo=dogukannparlak/Kitleleri_Uyutma_Engelleyici&label=Repo%20views&color=0e75b6&style=plastic" alt="dogukannparlak/Kitleleri_Uyutma_Engelleyici" />
+  <img src="https://komarev.com/ghpvc/?username=dogukannparlak&repo=Kitleleri_Uyutma_Engelleyici&label=Repo%20views&color=0e75b6&style=plastic" alt="dogukannparlak/Kitleleri_Uyutma_Engelleyici" />
 </p>
  
 ### 📥 Depoyu Klonlama
