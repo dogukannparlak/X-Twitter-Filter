@@ -17,7 +17,7 @@ Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kel
 ## 🛠 Kurulum
 
 1. **Tampermonkey** veya **Violentmonkey** gibi bir kullanıcı betiği yöneticisini tarayıcınıza yükleyin.
-2. [Kitleleri Uyutma Aracı Engelleyici](<https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js>) betiğini yüklemek için [bu bağlantıya](<https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js>) tıklayın.
+2. [Kitleleri Uyutma Aracı Engelleyici](<https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js>) betiğini yüklemek için [bu bağlantıya](<https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js>) tıklayın.
 3. Betiği etkinleştirin ve X (Twitter) üzerinde test edin.
 
 ## 🎛 Kullanım
@@ -54,8 +54,8 @@ Geliştirmelere katkıda bulunmak isterseniz, **Pull Request** gönderebilir vey
 Projeyi yerel ortamınıza çekmek için aşağıdaki komutu terminalde çalıştırabilirsiniz:
 
 ```sh
-git clone https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici.git
-cd Kitleleri_Uyutma_Engelleyici
+git clone https://github.com/dogukannparlak/X-Twitter-Filter.git
+cd X-Twitter-Filter
 ```
 
 Güncellemeleri almak için:
@@ -67,8 +67,7 @@ git pull origin main
 ## 📢 Geliştiriciler
 
 - **[Dogukan Parlak](https://x.com/dogukanparIak)** - X (Twitter) Profili
-- **[Dursunator](https://x.com/dursunator)** - X (Twitter) Profili
-
+  
 Bu betik ile sosyal medyada daha iyi bir deneyim yaşayın! 🎭🚀
 
 ## 📜 Lisans
