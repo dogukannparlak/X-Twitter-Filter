@@ -24,7 +24,7 @@
     kitlelerUyutmaKeywords:
       "futbol,maç,morinyo,mourinho,#GSvFB,#FBvGS,derbi,fener,fenerbahçe,galatasaray,gs,fb,okan buruk,osimhhen,bjk",
     ekKeywords: "",
-    specialAccounts: "fahrettinaltun,06melihgokcek",
+    specialAccounts: "realDonaldTrump",
     grokKeywords: "grok,GROK,@grok",
     isEnabled: true,
     shortcutsEnabled: true,
@@ -442,17 +442,7 @@
   const optimizedObserver = throttledObserver();
 
   // Keyboard shortcuts
-  function redirectToOperaGX(event) {
-    if (!settings.shortcutsEnabled) return;
 
-    if (event.altKey && event.shiftKey && event.key === "O") {
-      window.open("https://www.opera.com/tr/gx", "_blank");
-    } else if (event.altKey && event.shiftKey && event.key === "I") {
-      window.open("https://x.com/operagxturkiye", "_blank");
-    } else if (event.altKey && event.shiftKey && event.key === "K") {
-      toggleSettingsPanel();
-    }
-  }
 
   document.addEventListener("keydown", redirectToOperaGX);
 
@@ -482,7 +472,7 @@
 
         specialAccounts.forEach((account) => {
           if (usernameText.includes("@" + account)) {
-            filterReason = "Bu kişi rende binasına hizmet ediyor";
+            filterReason = "Bu kişi bir siyasetçidir :d";
             shouldFilter = true;
             isSpecialAccount = true;
           }
@@ -808,8 +798,7 @@
                             <div class="ua-shortcut-box">
                                 <ul class="ua-shortcut-list">
                                     <li><span class="ua-kbd">Alt</span> + <span class="ua-kbd">Shift</span> + <span class="ua-kbd">K</span>: Ayarlar panelini aç/kapat</li>
-                                    <li><span class="ua-kbd">Alt</span> + <span class="ua-kbd">Shift</span> + <span class="ua-kbd">O</span>: Opera GX sayfasını aç</li>
-                                    <li><span class="ua-kbd">Alt</span> + <span class="ua-kbd">Shift</span> + <span class="ua-kbd">I</span>: Opera GX Türkiye sayfasını aç</li>
+
                                 </ul>
                             </div>
                         </div>
@@ -817,11 +806,8 @@
                         <div class="ua-section">
                             <div class="ua-section-title">Hızlı Erişim Linkleri</div>
                             <div class="ua-links-container">
-                                <button class="ua-link-button" data-url="https://www.opera.com/tr/gx">Opera GX</button>
-                                <button class="ua-link-button" data-url="https://x.com/operagxturkiye">Opera GX Türkiye</button>
-                                <button class="ua-link-button" data-url="https://x.com/dogukanparIak">DogukanparIak</button>
-                                <button class="ua-link-button" data-url="https://x.com/dursunator">Dursunator</button>
-                            </div>
+                               <button class="ua-link-button" data-url="https://x.com/dogukanparIak">DogukanparIak</button>
+                            
                         </div>
                         <div class="ua-buttons-container">
                         <button id="uaSaveButton" class="ua-button ua-button-primary">Kaydet</button>
@@ -1105,17 +1091,9 @@
   GM_registerMenuCommand("🔄 Yenile", function () {
     location.reload();
   });
-  GM_registerMenuCommand("🌐 Opera GX Sayfasına Git", function () {
-    window.open("https://www.opera.com/tr/gx", "_blank");
-  });
+
   GM_registerMenuCommand("🐦 DogukanparIak Profiline Git", function () {
     window.open("https://x.com/dogukanparIak", "_blank");
-  });
-  GM_registerMenuCommand("🐦 Opera GX Türkiye X Hesabı", function () {
-    window.open("https://x.com/operagxturkiye", "_blank");
-  });
-  GM_registerMenuCommand("🐦 Dursunator Profiline Git", function () {
-    window.open("https://x.com/dursunator", "_blank");
   });
 
   // Start observing
