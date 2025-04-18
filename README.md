@@ -37,7 +37,7 @@ Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kel
 ## 🔧 Teknik Detaylar
 
 - **JavaScript (UserScript) tabanlıdır.**
-- **Geliştirme ve güncellemeler için:** [GitHub Sayfası](https://github.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici)
+- **Geliştirme ve güncellemeler için:** [GitHub Sayfası](https://github.com/dogukannparlak/X-Twitter-Filter)
 
 
 ## ✨ Katkıda Bulunun
