@@ -11,8 +11,8 @@
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_addStyle
-// @downloadURL  https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js
-// @updateURL    https://raw.githubusercontent.com/dogukannparlak/Kitleleri_Uyutma_Engelleyici/main/X(Twitter)Filter.js
+// @downloadURL  https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js
+// @updateURL    https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js
 // ==/UserScript==
 
 (function () {
@@ -428,23 +428,15 @@
     return { filtered: false };
   }
 
-  // Throttled observer for better performance
-  function throttledObserver() {
-    let timeout;
-    return function () {
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        processNewContent();
-      }, 200);
-    };
+  function handleKeyboardShortcuts(e) {
+    if (!settings.shortcutsEnabled) return;
+    if (e.altKey && e.shiftKey && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      toggleSettingsPanel();
+    }
   }
 
-  const optimizedObserver = throttledObserver();
-
-  // Keyboard shortcuts
-
-
-  document.addEventListener("keydown", redirectToOperaGX);
+  document.addEventListener("keydown", handleKeyboardShortcuts);
 
   // Main observer for filtering content
   const observer = new MutationObserver(() => {

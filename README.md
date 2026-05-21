@@ -1,75 +1,173 @@
-# Kitleleri Uyutma Aracı Engelleyici
+# X-Twitter-Filter
 
-## 📌 Proje Açıklaması
+**A Tampermonkey userscript that blurs or hides distracting posts on X (Twitter).**
 
-Bu kullanıcı betiği, X (eski adıyla Twitter) üzerindeki belirli anahtar kelimeleri içeren gönderileri bulanıklaştırmak veya gizlemek için tasarlanmıştır. Gündemi değiştirmek ve kitleleri yönlendirmek amacıyla kullanılan içerikleri filtreleyerek daha temiz bir sosyal medya deneyimi sunar.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.0-green.svg)](X(Twitter)Filter.js)
+[![Repo views](https://komarev.com/ghpvc/?username=dogukannparlak&repo=X-Twitter-Filter&label=views&color=0e75b6&style=flat-square)](https://github.com/dogukannparlak/X-Twitter-Filter)
 
-## 🚀 Özellikler
+---
 
-- Belirtilen anahtar kelimelere sahip gönderileri bulanıklaştırma veya tamamen gizleme.
-- Özel hesapları filtreleme.
-- GROK gibi belirli bot hesaplarını tespit edip engelleme.
-- Özel tema seçenekleri (Dracula, Nord, Özel Renkler).
-- Kendi belirleyeceğiniz özel filtreler.
-- Kullanıcı dostu ayarlar paneli.
-- Klavye kısayolları ile hızlı erişim.
+## About
 
-## 🛠 Kurulum
+I built this because my X feed kept filling up with content I didn't want to engage with — sports drama, political noise, bot-generated replies, and the usual "agenda-shifting" posts that crowd out everything else. Scrolling past them wasn't enough; I wanted them out of sight without unfollowing half the platform.
 
-1. **Tampermonkey** veya **Violentmonkey** gibi bir kullanıcı betiği yöneticisini tarayıcınıza yükleyin.
-2. [Kitleleri Uyutma Aracı Engelleyici](<https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js>) betiğini yüklemek için [bu bağlantıya](<https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js>) tıklayın.
-3. Betiği etkinleştirin ve X (Twitter) üzerinde test edin.
+**X-Twitter-Filter** (originally *Kitleleri Uyutma Aracı Engelleyici*) watches the page in real time and filters posts that match keywords, specific accounts, or GROK-related content. You can blur them with a click-to-reveal overlay, or hide them entirely.
 
-## 🎛 Kullanım
+This is a **personal open-source project** — one JavaScript file, no build step, no dependencies. Install it, tweak the filters, and make it yours.
 
-- **Ayarlar Menüsü**: Sağ üst köşeden veya `Alt + Shift + K` kısayolu ile açabilirsiniz.
-- **Filtreleme Seçenekleri**: Belirli kelimeler veya hesapları engellemek için ayarları özelleştirin.
-- **Tema Değişimi**: Dracula, Nord veya kendi özel temanızı oluşturabilirsiniz.
-- **Hızlı Erişim**:
-  - `Alt + Shift + O`: Opera GX sayfasını açar.
-  - `Alt + Shift + I`: Opera GX Türkiye X hesabını açar.
+> **Note:** The primary install path is **Tampermonkey / Violentmonkey**. A `manifest.json` is included for reference, but loading it as an unpacked browser extension is **experimental and unsupported** — the script relies on Tampermonkey's `GM_*` APIs.
 
-## 📌 Desteklenen Siteler
+---
 
-- `https://x.com/*`
-- `https://twitter.com/*`
+## Features
 
-## 🔧 Teknik Detaylar
+- **Blur or hide** — choose how filtered posts are handled
+- **Keyword filtering** — default sports/Turkish football terms plus your own custom keywords
+- **Account filtering** — block posts from specific usernames
+- **GROK detection** — filter `@grok` posts and GROK-related keywords
+- **Custom filter categories** — named groups with their own keywords and overlay messages
+- **Filter strength** — light (4px), medium (8px), or strong (12px) blur
+- **Themes** — Dracula, Nord, or custom colors
+- **Settings panel** — tabbed UI for all options (General, Accounts, Keywords, Custom Filters, Shortcuts)
+- **Import / export** — back up and restore your filter config as JSON
+- **Tampermonkey menu** — quick access to settings, reload, and developer links
 
-- **JavaScript (UserScript) tabanlıdır.**
-- **Geliştirme ve güncellemeler için:** [GitHub Sayfası](https://github.com/dogukannparlak/X-Twitter-Filter)
+---
 
+## How It Works
 
-## ✨ Katkıda Bulunun
+```mermaid
+flowchart TD
+    loadScript[Tampermonkey loads UserScript] --> loadSettings[Load settings via GM_getValue]
+    loadSettings --> applyTheme[Apply CSS theme]
+    applyTheme --> observer[MutationObserver on document.body]
+    observer --> scanArticles[Scan new article elements]
+    scanArticles --> filterChain{Filter priority}
+    filterChain -->|special accounts| blurHide[Blur or hide post]
+    filterChain -->|GROK account/keywords| blurHide
+    filterChain -->|custom filters| blurHide
+    filterChain -->|default keywords| blurHide
+    settingsPanel[Settings panel] --> saveSettings[GM_setValue + re-observe]
+```
 
-Geliştirmelere katkıda bulunmak isterseniz, **Pull Request** gönderebilir veya önerilerinizi **Issues** sekmesinde paylaşabilirsiniz.
+**Filter priority** (first match wins):
 
-## 📊 İstatistikler
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=dogukannparlak&repo=Kitleleri_Uyutma_Engelleyici&label=Repo%20views&color=0e75b6&style=plastic" alt="dogukannparlak/Kitleleri_Uyutma_Engelleyici" />
-</p>
- 
-### 📥 Depoyu Klonlama
+1. Special accounts (e.g. configured politicians/public figures)
+2. GROK account (`@grok`)
+3. GROK keywords
+4. Custom filter categories
+5. Default + extra keywords
 
-Projeyi yerel ortamınıza çekmek için aşağıdaki komutu terminalde çalıştırabilirsiniz:
+---
+
+## Installation
+
+### Option A — One-click install (recommended)
+
+1. Install a userscript manager:
+   - [Tampermonkey](https://www.tampermonkey.net/) (Chrome, Firefox, Edge, Safari)
+   - [Violentmonkey](https://violentmonkey.github.io/) (Firefox, Chrome, Edge)
+2. Open the raw script URL and confirm installation:
+   ```
+   https://raw.githubusercontent.com/dogukannparlak/X-Twitter-Filter/main/X(Twitter)Filter.js
+   ```
+3. Visit [x.com](https://x.com) or [twitter.com](https://twitter.com) — the script runs automatically.
+
+### Option B — Manual install
+
+1. Clone this repo (see [Development](#development) below).
+2. Open your userscript manager → **Create new script**.
+3. Paste the contents of `X(Twitter)Filter.js` and save.
+
+---
+
+## Usage
+
+### Opening settings
+
+- Click the Tampermonkey icon → **⚙️ Ayarları Aç** (Open Settings)
+- Press **`Alt + Shift + K`** (when keyboard shortcuts are enabled)
+
+### Settings tabs
+
+| Tab | What you can configure |
+|-----|------------------------|
+| **Genel** (General) | Enable/disable filtering, blur vs hide, theme, filter strength |
+| **Hesaplar** (Accounts) | Comma-separated usernames to filter |
+| **Anahtar Kelimeler** (Keywords) | Default and extra keyword lists |
+| **Özel Filtreler** (Custom) | Named filter groups with custom messages |
+| **Kısayollar** (Shortcuts) | Keyboard shortcut reference and quick links |
+
+### Blur mode
+
+Filtered posts show a colored overlay with the filter reason. **Click the post** to reveal the content underneath.
+
+### Import / export
+
+Use the buttons in the Custom Filters tab to export your settings as JSON or import a previously saved config.
+
+---
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Alt + Shift + K` | Toggle settings panel |
+
+Shortcuts can be disabled in the General settings tab.
+
+---
+
+## Configuration
+
+Settings are persisted via Tampermonkey storage (`GM_setValue` / `GM_getValue`) under the key `uaSettings`.
+
+**Default keyword examples:** `futbol`, `maç`, `derbi`, `galatasaray`, `fenerbahçe`, `#GSvFB`, and more.
+
+**Default filtered account:** `realDonaldTrump` (editable in settings).
+
+You can reset to defaults by clearing the script's stored data in Tampermonkey, or by importing a fresh config.
+
+---
+
+## Development
+
+No build tools required — this is a single vanilla JavaScript file.
 
 ```sh
 git clone https://github.com/dogukannparlak/X-Twitter-Filter.git
 cd X-Twitter-Filter
 ```
 
-Güncellemeleri almak için:
+1. Edit `X(Twitter)Filter.js`.
+2. Save in Tampermonkey (or reload the page if using `@updateURL`).
+3. Test on [x.com](https://x.com).
+
+To pull updates:
 
 ```sh
 git pull origin main
 ```
 
-## 📢 Geliştiriciler
+---
 
-- **[Dogukan Parlak](https://x.com/dogukanparIak)** - X (Twitter) Profili
-  
-Bu betik ile sosyal medyada daha iyi bir deneyim yaşayın! 🎭🚀
+## Contributing
 
-## 📜 Lisans
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features, and submitting pull requests.
 
-Bu proje **MIT Lisansı** altında sunulmaktadır. Kullanım serbesttir, ancak geliştiricilere atıfta bulunulması önerilir.
+---
+
+## Author
+
+**[Doğukan Parlak](https://x.com/dogukanparIak)**
+
+Originally developed in the **Opera GX Türkiye** community. Co-credited: `/dursunator`.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2025 Doğukan Parlak
